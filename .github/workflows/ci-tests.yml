@@ -1,0 +1,50 @@
+name: ci-tests
+
+# Runs the committed script test suites on every PR that touches scripts/ or aeon.yml.
+# These are the local tests authored alongside the hardening "easy wins" ported from
+# aeon-dev (notify formatting, log compaction, skill pruning) — same gate shape as the
+# other ci-*.yml. Keeps the extracted ./notify and the helper scripts honest.
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/**'
+      - 'aeon.yml'
+      - '.github/workflows/ci-tests.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/**'
+      - 'aeon.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Install deps
+        run: pip install pyyaml==6.0.2
+      - name: notify_format unit tests
+        run: python3 scripts/tests/test_notify_format.py
+      - name: notify integration tests
+        run: bash scripts/tests/test_notify.sh
+      - name: telegram router tests
+        run: bash scripts/tests/test_telegram_route.sh
+      - name: log compaction tests
+        run: python3 scripts/tests/test_compact_logs.py
+      - name: prune analyzer tests
+        run: python3 scripts/tests/test_prune_skills.py
+      - name: capability mode tests
+        run: bash scripts/tests/test_skill_mode.sh
+      - name: grok harness runner tests
+        run: bash scripts/tests/test_run_grok.sh
+      - name: state reducer tests
+        run: python3 scripts/tests/test_state_reduce.py
+      - name: health triage tests
+        run: python3 scripts/tests/test_health_triage.py
+      - name: validate-config unit tests
+        run: node --test scripts/validate-config.test.js

@@ -1,0 +1,56 @@
+# macOS
+.DS_Store
+
+# Secrets & local env
+.env
+.env.local
+.env.*.local
+
+# Claude Code local state
+.claude/
+
+# Caches (regenerated per run)
+.xai-cache/
+.bankr-cache/
+.pending-notify/
+.pending-replicate/
+.pending-supernotes/
+.pending-deploy/
+.pending-devto/
+.pending-farcaster/
+.tg_cache/
+
+# Skill provenance lock (per-repo, not committed)
+skills.lock
+
+# Per-fork agent wallets — advertised to the x402books ecosystem. Each operator
+# creates their own from .x402books/wallets.json.example; never commit real
+# addresses upstream (a pulled-in wallets.json misattributes fork activity).
+.x402books/wallets.json
+
+# Scratch / temp files
+tmp_*
+*.tmp
+.tmp-*
+.pending-*.sh
+.run-*.sh
+.*-tmp.md
+.*-draft.md
+.*-msg.txt
+*_msg.txt
+*_raw.txt
+
+# Leaked creds scratch
+.xai_key
+.ghtoken
+
+# Python bytecode
+__pycache__/
+*.pyc
+
+# Node
+node_modules/
+
+# Stale artifacts
+.external-work
+.vuln-scan/
